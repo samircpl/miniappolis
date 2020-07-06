@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    triggers { pollSCM 'H/1 * * * *' }
+    triggers { pollSCM '*/1 * * * *' }
     environment {
         FOO = 'bar'
     }
