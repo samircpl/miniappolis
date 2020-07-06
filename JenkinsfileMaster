@@ -1,0 +1,98 @@
+pipeline {
+    def versionMajorMinor = "0.2"
+
+    agent any
+    triggers { pollSCM '*/1 * * * *' }
+    environment {
+        FOO = 'bar'
+
+    }
+
+    stages {
+        stage('Master Build') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                script {
+                        docker.withRegistry('https://registry.example.com') {
+                            def customImage = docker.build("miniappolis:${env.BUILD_ID}")
+            
+                            //customImage.push()
+                        }           
+                        
+                    }
+                }
+        }
+        stage('Master Test') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing Master Branch"'
+            }
+        }
+
+        stage('SemVer TAG and Release This commit?') {
+            // Following https://semver.org/
+            when {
+                branch '*/master'
+            }
+            steps {
+                script {
+                        docker.withRegistry('https://registry.example.com') {
+                            def customImage = docker.build("miniappolis:${env.BUILD_ID}")
+                            //customImage.push()
+                        }           
+                        
+                    }
+                }
+        }
+
+        stage('Deploy to Beta') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing Master Branch"'
+            }
+        }
+        stage('Beta Smoke test') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing Master Branch"'
+            }
+        }
+
+        stage('Deploy to Gamma STG') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing Master Branch"'
+            }
+        }
+
+        stage('Deploy to Gamma Prod') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing Master Branch"'
+            }
+        }
+
+        stage('Repeat Gamma flow for every other Cloud/Env') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing Master Branch"'
+            }
+        
+
+
+    }
+}
