@@ -58,7 +58,7 @@ pipeline {
                 // Assign the 'DO_RELEASE' environment variable that is going
                 //  to be used in the next stage.
                 env.DO_RELEASE =  input(message:"Deploy to CI?", ok:"yes", parameters: [
-                                                [$class: 'TextParameterDefinition', defaultValue: 'no', name: 'no'])
+                                                [$class: 'TextParameterDefinition', defaultValue: 'no', name: 'no']])
             }
             // In case you approved multiple pipeline runs in parallel, this
             // milestone would kill the older runs and prevent deploying
