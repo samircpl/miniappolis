@@ -62,7 +62,8 @@ pipeline {
                                             submitter "admin"
                                             parameters {
                                                 string(name: 'DO_RELEASE', defaultValue: 'no')
-                                            }
+                                            } 
+                                        }
             }
             // In case you approved multiple pipeline runs in parallel, this
             // milestone would kill the older runs and prevent deploying
