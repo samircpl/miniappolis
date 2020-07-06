@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    triggers { pollSCM 'H/2 * * * *' }
+    triggers { pollSCM 'H/1 * * * *' }
     environment {
         FOO = 'bar'
     }
@@ -11,7 +11,6 @@ pipeline {
                 branch 'master' 
             }
             steps {
-                git url: 'git@github.com:samircpl/miniappolis.git'
                 script {
                         docker.withRegistry('https://registry.example.com') {
                             def customImage = docker.build("miniappolis:${env.BUILD_ID}")
