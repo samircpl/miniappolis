@@ -6,9 +6,11 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Feature Branch Build') {
             when {
-                branch '*/master' 
+                not {
+                    branch '*/master'
+                }
             }
             steps {
                 script {
@@ -21,10 +23,49 @@ pipeline {
                     }
                 }
         }
-        stage('Test') {
+        stage('Feature Branch Test') {
+            when {
+                not {
+                    branch '*/master'
+                }
+            }
+            steps {
+                sh 'ls -lisat'
+            }
+        }
+        stage('Opt. Deploy to CI') {
+            when {
+                not {
+                    branch '*/master'
+                }
+            }
             steps {
                 sh 'ls -lisat'
             }
         }
     }
 }
+
+
+
+// ------------
+// Pre-merge 
+
+//   * Build
+//   * Test
+//   * PR - Deploy to CI
+
+
+// Post-merge
+
+//  * build
+//  * test
+//  * (manual) Tag
+//  * (manual) Deploy Dogfood
+
+
+// Beyond (manual)
+
+//  * Deploy to Beta
+//  * Deploy to Gamma
+//  * Deploy to Kappa
