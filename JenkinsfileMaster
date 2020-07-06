@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Master Build') {
             when {
-                branch '*/master'
+                branch 'master'
             }
             steps {
                 script {
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Master Test') {
             when {
-                branch '*/master'
+                branch 'master'
             }
             steps {
                 sh 'echo "Testing Master Branch"'
