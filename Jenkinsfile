@@ -57,9 +57,7 @@ pipeline {
             script {
                 // Assign the 'DO_RELEASE' environment variable that is going
                 //  to be used in the next stage.
-                env.DO_RELEASE =  input {   message "Deploy to CI?"
-                                            ok "yes"
-                                        }
+                env.DO_RELEASE =  input(message:"Deploy to CI?", ok:"yes")
             }
             // In case you approved multiple pipeline runs in parallel, this
             // milestone would kill the older runs and prevent deploying
@@ -67,7 +65,7 @@ pipeline {
             milestone 1
             }
         }
-        stage('Deployt to CI') {
+        stage('Deploy to CI') {
             // We need a real agent, because we want to do some real work.
             agent any
             when {
@@ -88,7 +86,7 @@ pipeline {
                 milestone 2
 
                 // Now do the actual work here.
-                sh 'echo "deploying to CI"'
+                sh 'echo "Trigger CloudBuild here to deploy to EKS"'
             }
             }
         }
