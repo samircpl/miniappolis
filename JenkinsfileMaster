@@ -1,5 +1,5 @@
 pipeline {
-    def versionMajorMinor = "0.2"
+    // def versionMajorMinor = "0.2"
 
     agent any
     triggers { pollSCM '*/1 * * * *' }
@@ -91,6 +91,7 @@ pipeline {
             steps {
                 sh 'echo "Testing Master Branch"'
             }
+        }
         
 
 
