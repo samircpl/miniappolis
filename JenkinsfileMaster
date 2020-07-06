@@ -11,7 +11,10 @@ pipeline {
     stages {
         stage('Master Build') {
             when {
-                branch 'master'
+                // There are better ways but https://issues.jenkins-ci.org/browse/JENKINS-43104
+                expression {
+                    return env.GIT_BRANCH == "origin/master"
+                }
             }
             steps {
                 script {
