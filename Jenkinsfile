@@ -59,10 +59,6 @@ pipeline {
                 //  to be used in the next stage.
                 env.DO_RELEASE =  input {   message "Deploy to CI?"
                                             ok "yes"
-                                            submitter "admin"
-                                            parameters {
-                                                string(name: 'DO_RELEASE', defaultValue: 'no')
-                                            } 
                                         }
             }
             // In case you approved multiple pipeline runs in parallel, this
