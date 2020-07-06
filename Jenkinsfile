@@ -35,7 +35,7 @@ pipeline {
         }
 
 
-        stage('Release?') {
+        stage('Deployt to CI?') {
             // Don't allocate an agent because we don't want to block our
             // slaves while waiting for user input.
             agent none
@@ -57,7 +57,12 @@ pipeline {
             script {
                 // Assign the 'DO_RELEASE' environment variable that is going
                 //  to be used in the next stage.
-                env.DO_RELEASE = input 'Deploy to CI?'
+                env.DO_RELEASE =  input {   message "Deploy to CI?"
+                                            ok "yes"
+                                            submitter "admin"
+                                            parameters {
+                                                string(name: 'DO_RELEASE', defaultValue: 'no')
+                                            }
             }
             // In case you approved multiple pipeline runs in parallel, this
             // milestone would kill the older runs and prevent deploying
@@ -65,7 +70,7 @@ pipeline {
             milestone 1
             }
         }
-        stage('Release') {
+        stage('Deployt to CI') {
             // We need a real agent, because we want to do some real work.
             agent any
             when {
