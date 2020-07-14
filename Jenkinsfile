@@ -5,16 +5,18 @@ pipeline {
         FOO = 'bar'
     }
 
-    stages {
-        stage('Feature Branch Build') {
+     stages {
+        stage('Dev - Build') {
             when {
-                not {
-                    branch '*/master'
+                // There are better ways but https://issues.jenkins-ci.org/browse/JENKINS-43104
+                expression {
+                    return env.GIT_BRANCH == "origin/dev"
                 }
             }
             steps {
                 script {
                         docker.withRegistry('https://registry.example.com') {
+                            // Potentially use Commit Hash as identifier here
                             def customImage = docker.build("miniappolis:${env.BUILD_ID}")
             
                             //customImage.push()
@@ -23,19 +25,69 @@ pipeline {
                     }
                 }
         }
-        stage('Feature Branch Test') {
+ 
+        stage('Dev - Unit Tests') {
             when {
-                not {
-                    branch '*/master'
-                }
+                branch '*/dev'
             }
             steps {
-                sh 'ls -lisat'
+                sh 'echo "Testing Dev Branch"'
+            }
+        }
+        stage('Dev - Security Scans') {
+            when {
+                branch '*/dev'
+            }
+            steps {
+                sh 'echo "Testing Dev Branch"'
             }
         }
 
+        stage('Deploy to CI') {
+            when {
+                branch '*/dev'
+            }
+            steps {
+                sh 'echo "Testing Dev Branch"'
+            }
+        }
 
-        stage('Deployt to CI?') {
+        stage('Master - Tag') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing MAster Branch"'
+            }
+        }
+
+        stage('Master - Build/Publish') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing MAster Branch"'
+            }
+        }
+        stage('Master - Test') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing MAster Branch"'
+            }
+        }
+
+        stage('Master - Tag/Build/Publish') {
+            when {
+                branch '*/master'
+            }
+            steps {
+                sh 'echo "Testing MAster Branch"'
+            }
+        }
+
+        stage('Update RelMatrix with this TAG?') {
 
             agent none
             options {
@@ -43,16 +95,16 @@ pipeline {
             }
             steps {
                 script {
-                    env.DO_RELEASE =  input(message:"Deploy to CI?", ok:"yes")
+                    env.DO_RELEASE =  input(message:"Promote to Release Matrix?", ok:"yes")
                 }
                 milestone 1
             }
         }
-        stage('Deploy to CI') {
+        stage('Updating Release Candidate') {
             agent any
             when {
-            beforeAgent true
-            environment name: 'DO_RELEASE', value: 'yes'
+                beforeAgent true
+                environment name: 'DO_RELEASE', value: 'yes'
             }
             steps {
             lock('release') {
